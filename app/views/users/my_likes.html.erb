@@ -3,8 +3,8 @@
 <table>
 <% @user_likes.each do |likes|%>
   <tr>
-    <td> <%=likes.caption %> </td>
-    <td> <%=likes.image%> </td>
+        <td> <%=likes.photo.caption%> </td>
+        <td> <%=likes.photo.image%> </td>
   </tr>
 <% end %>
 </table>
