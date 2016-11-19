@@ -32,6 +32,22 @@ class LikesController < ApplicationController
     end
   end
 
+  def create_from_photo
+    @like = Like.new
+
+    @like.user_id = params[:user_id]
+    @like.photo_id = params[:photo_id]
+
+    save_status = @like.save
+
+    if save_status == true
+      redirect_to(:back)
+    else
+      render("likes/new.html.erb")
+    end
+  end
+
+
   def edit
     @like = Like.find(params[:id])
 
@@ -64,4 +80,12 @@ class LikesController < ApplicationController
       redirect_to(:back, :notice => "Like deleted.")
     end
   end
+
+  def destroy_from_photo
+    @like = Like.find(params[:id])
+
+    @like.destroy
+    redirect_to(:back)
+  end
+
 end

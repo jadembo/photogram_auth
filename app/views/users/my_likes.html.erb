@@ -5,19 +5,50 @@
     <dl class="dl-horizontal">
 
       <table class="table">
-        <% @user_likes.each do |likes|%>
+        <% @user_likes.each do |favorites|%>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><a href = "/users/<%=likes.user.id%>"><%= likes.user.username%></a> <small><%=time_ago_in_words(likes.photo.created_at)%> ago </small></h3>
+            <h3 class="panel-title"><a href = "/users/<%=favorites.user.id%>"><%= favorites.user.username%></a> <small><%=time_ago_in_words(favorites.photo.created_at)%> ago </small></h3>
           </div>
           <div class="panel-body">
-            <a href="/photos/<%= likes.id %>"> <img src = "<%= likes.photo.image %>" class = "img-responsive"> </a>
+            <a href="/photos/<%= favorites.id %>"> <img src = "<%= favorites.photo.image %>" class = "img-responsive"> </a>
           </div>
           <div class="panel-footer">
-            <p><%=likes.photo.caption%> </p>
+            <p><%=favorites.photo.caption%> </p>
+
+            <p>
+              <% if favorites.photo.likes.find_by(:user_id => current_user.id) == nil %>
+
+              <form action="/create_like_from_photo" method="post">
+                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+                <input type="hidden" id="photo_id" name="photo_id" placeholder="Photo" class="form-control" value="<%= favorites.photo.id %>">
+                <button class="btn btn-link">
+                  <i class="fa fa-heart-o" aria-hidden="true"></i>
+                </button>
+
+                <% else %>
+
+                <a href = "/delete_like_from_photo/<%=favorites.photo.likes.find_by(:user_id => current_user.id).id %>" class="btn btn-link"> <i class="fa fa-heart" aria-hidden="true"></i> </a>
+
+                <% end %>
+
+                <small>
+                <% if favorites.photo.fans.pluck(:username).count == 0 %>
+                Be the first to like this
+                <% elsif favorites.photo.fans.pluck(:username).count == 1%>
+                <%= favorites.photo.fans.pluck(:username).to_sentence %> likes this
+                <% else %>
+                <%= favorites.photo.fans.pluck(:username).to_sentence %> like this
+                <% end %>
+                </small>
+              </form>
+
+            </p>
+
 
             <ul class = "media-list">
-              <% likes.photo.comments.each do |comment| %>
+              <% favorites.photo.comments.each do |comment| %>
               <li class = "media">
                 <div class="media-body">
                   <h6 class="media-heading"><a href="/users/<%=comment.user.id%>"> <%=comment.user.username%> </a> <small><%=time_ago_in_words(comment.created_at)%> ago</small></h6>
@@ -30,9 +61,9 @@
                 <div class="media-body">
                   <form action = "/create_comment_from_photo" method="post">
                     <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-                    <input type="hidden" id="photo_id" name="photo_id" placeholder="photo" class="form-control" value="<%= likes.photo.id %>">
+                    <input type="hidden" id="photo_id" name="photo_id" placeholder="photo" class="form-control" value="<%= favorites.photo.id %>">
                     <input type="hidden" id="user_id" name="user_id" placeholder="user" class="form-control" value="<%= current_user.id %>">
-                    <input type="text" id="body" name="body" placeholder="Add a comment" class="form-control">
+                    <input type="text" id="body" name="body" placeholder="Add a comment..." class="form-control">
                   </form>
                 </div>
               </li>

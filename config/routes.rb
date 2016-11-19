@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   # CREATE
   get "/likes/new", :controller => "likes", :action => "new"
   post "/create_like", :controller => "likes", :action => "create"
+  post "/create_like_from_photo", :controller => "likes", :action => "create_from_photo"
 
   # READ
   get "/likes", :controller => "likes", :action => "index"
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
 
   # DELETE
   get "/delete_like/:id", :controller => "likes", :action => "destroy"
+  get "/delete_like_from_photo/:id", :controller => "likes", :action => "destroy_from_photo"
   #------------------------------
 
   # Routes for the Photo resource:
