@@ -1,10 +1,24 @@
-<h2>My Likes</h2>
+<hr>
 
-<table>
-<% @user_likes.each do |likes|%>
-  <tr>
-        <td> <%=likes.photo.caption%> </td>
-        <td> <%=likes.photo.image%> </td>
-  </tr>
-<% end %>
-</table>
+<div class="row">
+  <div class="col-md-offset-2 col-md-8">
+    <dl class="dl-horizontal">
+
+      <table class="table">
+        <% @user_likes.each do |likes|%>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><a href = "/users/<%=likes.user.id%>"><%= likes.user.username%></h3>
+          </div>
+          <div class="panel-body">
+            <a href="/photos/<%= likes.id %>"> <img src = "<%= likes.photo.image %>" class = "img-responsive"> </a>
+          </div>
+          <div class="panel-footer">
+            <p><%=likes.photo.caption%> </p>
+          </div>
+        </div>
+        <% end %>
+      </table>
+    </dl>
+  </div>
+</div>

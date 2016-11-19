@@ -1,10 +1,27 @@
-<h2><%=@user.username.capitalize%> </h2>
+<div class="page-header">
+  <h1>
+    <%=@user.username.capitalize%>
+  </h1>
+</div>
 
-<table>
-<% @user_photos.each do |photo|%>
-<tr>
-  <td> <%=photo.caption%> </td>
-  <td> <%=photo.image%> </td>
-</tr>
-<% end %>
-</table>
+<div class="row">
+  <div class="col-md-offset-2 col-md-8">
+    <table class="table">
+      <% @user_photos.each do |photo|%>
+      <tr>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><a href = "/users/<%=photo.user.id%>"><%= photo.user.username%></h3>
+            </div>
+            <div class="panel-body">
+              <a href="/photos/<%= photo.id %>"> <img src = "<%= photo.image %>" class = "img-responsive"> </a>
+            </div>
+            <div class="panel-footer">
+              <p><%=photo.caption %> </p>
+            </div>
+          </div>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
