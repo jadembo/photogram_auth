@@ -13,7 +13,17 @@
         <td>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title"><a href = "/users/<%=photo.user.id%>"><%= photo.user.username%></a> <small><%=time_ago_in_words(photo.created_at)%> ago </small> </h3>
+                <h3 class="panel-title"><a href = "/users/<%=photo.user.id%>"><%= photo.user.username%></a> <small><%=time_ago_in_words(photo.created_at)%> ago </small>
+
+                </h3>
+                <% if photo.user_id == current_user.id %>
+                <a href="/photos/<%= photo.id %>/edit">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                <a href="/delete_photo/<%= photo.id %>" rel="nofollow">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </a>
+                <% end %>
             </div>
             <div class="panel-body">
               <a href="/photos/<%= photo.id %>"> <img src = "<%= photo.image %>" class = "img-responsive"> </a>
